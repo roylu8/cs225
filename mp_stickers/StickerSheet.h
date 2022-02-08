@@ -17,8 +17,6 @@ public:
     StickerSheet(const Image &picture, unsigned max);
     ~StickerSheet();
     StickerSheet(const StickerSheet &other);
-    void clear();
-    void copy(const StickerSheet &other);
     const StickerSheet &operator=(const StickerSheet &other);
     void changeMaxStickers(unsigned max);
     int addSticker(Image &sticker, unsigned x, unsigned y);
@@ -28,10 +26,15 @@ public:
     Image render() const;
 
 private:
-    unsigned max_;
+    struct sticker
+    {
+        Image *im;
+        unsigned x;
+        unsigned y;
+    };
+    sticker *allStickers_;
     Image baseImage_;
-    unsigned *xCoords_;
-    unsigned *yCoords_;
-    Image **allStickers_;
-    unsigned numStickers_;
+    unsigned numStickers_, max_;
+    void copy(const StickerSheet &other);
+    void clear();
 };

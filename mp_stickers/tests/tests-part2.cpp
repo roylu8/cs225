@@ -29,7 +29,6 @@ TEST_CASE("A basic StickerSheet works", "[weight=5][part=2][timeout=30000][valgr
   REQUIRE( sheet.render() == expected );
 }
 
-
 TEST_CASE("StickerSheet::changeMaxStickers() does not discard stickers when resized larger", "[weight=1][part=2][timeout=30000][valgrind]") {
   Image alma; alma.readFromFile("tests/alma.png");
   Image i;    i.readFromFile("tests/i.png");
@@ -90,8 +89,6 @@ TEST_CASE("StickerSheet::changeMaxStickers() discards stickers beyond the end of
   REQUIRE( sheet.render() == expected );
 }
 
-
-
 //
 // test removeSticker
 //
@@ -137,8 +134,6 @@ TEST_CASE("StickerSheet::removeSticker() can remove all stickers", "[weight=1][p
   REQUIRE( sheet.render() == alma );
 }
 
-
-
 //
 // test that getSticker works
 //
@@ -176,7 +171,6 @@ TEST_CASE("StickerSheet::getSticker() returns NULL for a removed sticker", "[wei
   REQUIRE( sheet.getSticker(0) == NULL );
 }
 
-
 //
 // translate
 //
@@ -203,7 +197,6 @@ TEST_CASE("StickerSheet::translate() returns false for a non-existant sticker", 
   REQUIRE( sheet.translate(3, 20, 200) == false );
 }
 
-
 //
 // render
 //
@@ -225,7 +218,6 @@ TEST_CASE("A complex StickerSheet is correct", "[weight=5][part=2][timeout=30000
 
   REQUIRE( sheet.render() == expected );
 }
-
 
 //
 // copy ctor
@@ -264,7 +256,6 @@ TEST_CASE("StickerSheet's assignment operator makes an independent copy", "[weig
   REQUIRE( s1.render() == expected2 );
   REQUIRE( s2.render() == expected );
 }
-
 
 //
 // out of bounds with sanity checks
@@ -332,4 +323,3 @@ TEST_CASE("A Stickersheet with stickers placed beyond base image boundaries work
 
   REQUIRE( sheet.render() == alma );
 }
-
