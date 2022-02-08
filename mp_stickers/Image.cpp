@@ -175,7 +175,7 @@ void Image::scale(unsigned w, unsigned h)
     {
         for (unsigned y = 0; y < h; y++)
         {
-            HSLAPixel &pixelOld = originalImage.getPixel(w / (x / width()), h / (y / height()));
+            HSLAPixel &pixelOld = originalImage.getPixel(x / (w / width()), y / (h / height()));
             HSLAPixel &pixelNew = getPixel(x, y);
 
             pixelNew = pixelOld;
