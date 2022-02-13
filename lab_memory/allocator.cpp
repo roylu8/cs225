@@ -11,11 +11,17 @@
 #include "allocator.h"
 #include "fileio.h"
 
-Allocator::Allocator(const std::string& studentFile, const std::string& roomFile)
+Allocator::Allocator(const std::string &studentFile, const std::string &roomFile)
 {
     createLetterGroups();
     loadStudents(studentFile);
     loadRooms(roomFile);
+}
+
+Allocator::~Allocator()
+{
+    delete[] alpha;
+    delete[] rooms;
 }
 
 void Allocator::createLetterGroups()
@@ -26,13 +32,14 @@ void Allocator::createLetterGroups()
         alpha[i].letter = 'A' + i;
 }
 
-void Allocator::loadStudents(const std::string& file)
+void Allocator::loadStudents(const std::string &file)
 {
     // Read in students
     fileio::loadStudents(file);
     studentCount = fileio::getNumStudents();
 
-    for (int i = 0; i < studentCount; i++) {
+    for (int i = 0; i < studentCount; i++)
+    {
         std::string name = fileio::nextStudent();
         char letter = name[0];
         int index = (int)letter - 'A';
@@ -40,23 +47,24 @@ void Allocator::loadStudents(const std::string& file)
     }
 }
 
-void Allocator::loadRooms(const std::string& file)
+void Allocator::loadRooms(const std::string &file)
 {
     // Read in rooms
     fileio::loadRooms(file);
+    roomCount = fileio::getNumRooms();
     rooms = new Room[roomCount];
 
     totalCapacity = 0;
     int i = 0;
-    while (fileio::areMoreRooms()) {
-        i++; 
+    while (fileio::areMoreRooms())
+    {
         rooms[i] = fileio::nextRoom();
         totalCapacity += rooms[i].capacity;
+        i++;
     }
 }
 
-
-void Allocator::printStudents(std::ostream & stream /* = std::cout */)
+void Allocator::printStudents(std::ostream &stream /* = std::cout */)
 {
     // Output number of each last letter name
     stream << "Student counts (" << studentCount << " total)" << std::endl;
@@ -70,17 +78,20 @@ void Allocator::allocate()
     int border = solve();
 
     // Check for an error
-    if (border < 0) {
-        std::cerr << std::endl << "Cannot allocate all students." << std::endl << std::endl;
+    if (border < 0)
+    {
+        std::cerr << std::endl
+                  << "Cannot allocate all students." << std::endl
+                  << std::endl;
         exit(-1);
     }
 }
 
-void Allocator::printRooms(std::ostream & stream /* = std::cout */)
+void Allocator::printRooms(std::ostream &stream /* = std::cout */)
 {
     // Output the allocation
     stream << "Room Allocation (" << studentCount << "/" << totalCapacity << ")"
-         << std::endl;
+           << std::endl;
     for (int i = 0; i < roomCount; i++)
         rooms[i].print(stream);
 }
@@ -89,8 +100,9 @@ int Allocator::solve()
 {
     std::stable_sort(alpha, alpha + 26);
 
-    for (int L = 0; L < 26; L++) {
-        Room* r = largestOpening();
+    for (int L = 0; L < 26; L++)
+    {
+        Room *r = largestOpening();
         r->addLetter(alpha[L]);
     }
 
@@ -106,12 +118,14 @@ int Allocator::minSpaceRemaining()
     return border;
 }
 
-Room* Allocator::largestOpening()
+Room *Allocator::largestOpening()
 {
     int index = 0;
     int max_remaining = 0;
-    for (int i = 0; i < roomCount; i++) {
-        if (rooms[i].spaceRemaining() > max_remaining) {
+    for (int i = 0; i < roomCount; i++)
+    {
+        if (rooms[i].spaceRemaining() > max_remaining)
+        {
             index = i;
             max_remaining = rooms[i].spaceRemaining();
         }

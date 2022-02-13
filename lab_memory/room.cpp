@@ -11,7 +11,7 @@ Room::Room()
 {
 }
 
-Room::Room(const std::string& init_name, int init_capacity)
+Room::Room(const std::string &init_name, int init_capacity)
     : name(init_name),
       capacity(init_capacity),
       count(0),
@@ -21,14 +21,15 @@ Room::Room(const std::string& init_name, int init_capacity)
     letters = new Letter[max_letters];
 }
 
-Room::Room(const Room& other)
+Room::Room(const Room &other)
 {
     copy(other);
 }
 
-Room& Room::operator=(const Room& other)
+Room &Room::operator=(const Room &other)
 {
-    if (this != &other) {
+    if (this != &other)
+    {
         clear();
         copy(other);
     }
@@ -40,7 +41,7 @@ Room::~Room()
     clear();
 }
 
-void Room::addLetter(const Letter& L)
+void Room::addLetter(const Letter &L)
 {
     letters[letterCount++] = L;
     count += L.count;
@@ -51,7 +52,7 @@ int Room::spaceRemaining()
     return capacity - count;
 }
 
-void Room::print(std::ostream & stream /* = std::cout */)
+void Room::print(std::ostream &stream /* = std::cout */)
 {
     stream << name << " (" << count << "/" << capacity << "):";
     for (int L = 0; L < letterCount; L++)
@@ -62,16 +63,23 @@ void Room::print(std::ostream & stream /* = std::cout */)
 void Room::clear()
 {
     if (letters != NULL)
-
-        delete letters;
+    {
+        delete[] letters;
+        letters = NULL;
+    }
 }
 
-void Room::copy(const Room& other)
+void Room::copy(const Room &other)
 {
     name = other.name;
     capacity = other.capacity;
     count = other.count;
     letterCount = other.letterCount;
-    letters = other.letters;
-
+    // letters = other.letters;
+    max_letters = other.max_letters;
+    letters = new Letter[max_letters];
+    for (int i = 0; i < letterCount; i++)
+    {
+        letters[i] = other.letters[i];
+    }
 }
