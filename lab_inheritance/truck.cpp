@@ -138,4 +138,12 @@ void Truck::clear()
     delete window;
     delete engine;
 }
-
+void Truck::draw(PNG* canvas) const{
+  trailer->draw(canvas);
+  cabin->draw(canvas);
+  engine->draw(canvas);
+  window->draw(canvas); //window needs to be the last one
+  for (int i = 0; i < NUM_WHEELS; i++) {
+      wheels[i]->draw(canvas);
+  }
+}
