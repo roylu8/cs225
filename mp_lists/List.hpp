@@ -256,6 +256,23 @@ template <typename T>
 void List<T>::reverseNth(int n)
 {
   /// @todo Graded in MP3.2
+  if (head_ == NULL || head_ == tail_ || n == 1 || n == 0)
+  {
+    return;
+  }
+  ListNode *startPoint = head_;
+  ListNode *endPoint = head_;
+  while (endPoint->next != NULL && startPoint->next != NULL)
+  {
+    endPoint = startPoint;
+    for (int i = 0; i < n - 1; i++)
+    {
+      if (endPoint->next != NULL)
+        endPoint = endPoint->next;
+    }
+    reverse(startPoint, endPoint);
+    startPoint = endPoint->next;
+  }
 }
 
 /**
@@ -299,16 +316,65 @@ template <typename T>
 typename List<T>::ListNode *List<T>::merge(ListNode *first, ListNode *second)
 {
   /// @todo Graded in MP3.2
-  ListNode *curr, *temp;
+  if (first == NULL)
+  {
+    if (second == NULL)
+    {
+      return NULL;
+    }
+    return second;
+  }
+  if (second == NULL)
+  {
+    return first;
+  }
+
+  ListNode *curr, *start;
 
   if (first->data < second->data)
   {
     curr = first;
+    first = first->next;
   }
   else
   {
     curr = second;
+    second = second->next;
   }
+  start = curr;
+  while (1)
+  {
+    if (first == NULL)
+    {
+      curr->next = second;
+      second->prev = curr;
+      second = second->next;
+      curr = curr->next;
+      break;
+    }
+    else if (second == NULL)
+    {
+      curr->next = first;
+      first->prev = curr;
+      first = first->next;
+      curr = curr->next;
+      break;
+    }
+    else if (first->data < second->data)
+    {
+      curr->next = first;
+      first->prev = first;
+      first = first->next;
+    }
+    else
+    {
+      curr->next = second;
+      second->prev = curr;
+      second = second->next;
+    }
+    curr = curr->next;
+  }
+  return start;
 }
 
 /**
@@ -326,5 +392,26 @@ template <typename T>
 typename List<T>::ListNode *List<T>::mergesort(ListNode *start, int chainLength)
 {
   /// @todo Graded in MP3.2
-  return NULL;
+  ListNode *finalChain, *temp;
+  if (chainLength == 1)
+  {
+    return start;
+  }
+  else
+  {
+    temp = start;
+    for (int i = 0; i < chainLength / 2; i++)
+    {
+      temp = temp->next;
+    }
+    if (temp->prev != NULL)
+    {
+      temp->prev->next = NULL;
+      temp->prev = NULL;
+    }
+    start = mergesort(start, chainLength / 2);
+    temp = mergesort(temp, chainLength - chainLength / 2);
+    finalChain = merge(start, temp);
+  }
+  return finalChain;
 }
