@@ -302,6 +302,7 @@ void List<T>::reverseNth(int n)
 
   ListNode *curr = head_;
   ListNode *endd = head_;
+  bool brokeBoi = false;
 
   while (curr != NULL)
   {
@@ -311,9 +312,14 @@ void List<T>::reverseNth(int n)
       if (curr->next == NULL)
       {
         reverse(endd, curr);
-        return;
+        brokeBoi = true;
+        break;
       }
       curr = curr->next;
+    }
+    if (brokeBoi)
+    {
+      break;
     }
     reverse(endd, curr);
     curr = curr->next;
