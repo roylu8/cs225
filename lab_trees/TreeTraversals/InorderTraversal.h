@@ -25,8 +25,10 @@ class InorderTraversal : public TreeTraversal<T> {
     InorderTraversal(typename BinaryTree<T>::Node* root)
 	    : root(root)
     {
-      stack.push(root);	
-      // your code here
+      while (root != NULL) {
+				stack.push(root);
+				root = root->left;
+			}
     }
 
     /**
@@ -36,6 +38,7 @@ class InorderTraversal : public TreeTraversal<T> {
      * @return The iterator object pointing to the first node in the traversal
      */	
     typename TreeTraversal<T>::Iterator begin() {
+      InorderTraversal* iot = new InorderTraversal(root);
       return typename TreeTraversal<T>::Iterator(this, root);
     }
 
@@ -60,8 +63,13 @@ class InorderTraversal : public TreeTraversal<T> {
      *        should be added to the traversal
      */	
     void add(typename BinaryTree<T>::Node *& treeNode) {
-      // your code here
-      return;	
+      if (treeNode->right != NULL) {
+				treeNode = treeNode->right;
+				while (treeNode != NULL) {
+					stack.push(treeNode);
+					treeNode = treeNode->left;
+				}
+			}
     }
 
     /**
@@ -83,6 +91,7 @@ class InorderTraversal : public TreeTraversal<T> {
      */	
     typename BinaryTree<T>::Node* peek() const {
       return empty() ? NULL : stack.top();
+
     }
 
     /**

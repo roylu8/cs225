@@ -137,6 +137,8 @@ class BinaryTree
          */
         bool isOrderedRecursive() const;
 
+        
+
         /**
          *  Uses vector to store values of the nodes of a binary tree in order.
          * That is, everything to the left of a node will be pushed before that
@@ -172,7 +174,7 @@ class BinaryTree
         void printLeftToRight(const Node* subRoot) const;
 
 
-
+        bool ioth(Node* node, T min, T max) const;
 
         /**
          * Private helper function for the sorted public insert function.
@@ -207,6 +209,11 @@ class BinaryTree
          * @param treeVector stores nodes in order
          */
         void inOrder(Node *subRoot, std::vector<T>& treeVector);
+
+        
+
+
+        void mirror(Node *& Root);
 };
 
 #include "binarytree_given.cpp"
