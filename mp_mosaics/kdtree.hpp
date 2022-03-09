@@ -226,28 +226,16 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim> &query) const
     return findNearestNeighbor(query, root, 0);
   }
 }
-template <int Dim>
-double KDTree<Dim>::radius(const Point<Dim> first, const Point<Dim> second) const
-{
-  double distanceSquared = 0;
-
-  for (int i = 0; i < Dim; i++)
-  {
-    distanceSquared += (first[i] - second[i]) * (first[i] - second[i]);
-  }
-
-  return sqrt(distanceSquared);
-}
 
 template <int Dim>
 Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim> &query, KDTreeNode *root, int currDim) const
 {
+  double distanceSquared = 0;
   if (root == NULL)
   {
     return Point<Dim>();
   }
-
-  if (root->left == NULL && root->right == NULL)
+  else if (root->left == NULL && root->right == NULL)
   {
     return root->point;
   }
@@ -275,12 +263,27 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim> &query, KDTreeNode 
   }
   Point<Dim> best = temp;
 
-  double currRadius = radius(query, temp);
+  distanceSquared = 0;
+
+  for (int i = 0; i < Dim; i++)
+  {
+    distanceSquared += (query[i] - temp[i]) * (query[i] - temp[i]);
+  }
+
+  double currRadius = sqrt(distanceSquared);
 
   if (shouldReplace(query, best, root->point))
   {
     best = root->point;
-    double currRadius = radius(query, best);
+
+    distanceSquared = 0;
+
+    for (int i = 0; i < Dim; i++)
+    {
+      distanceSquared += (query[i] - best[i]) * (query[i] - best[i]);
+    }
+
+    double currRadius = sqrt(distanceSquared);
   }
 
   if (query[currDim] - currRadius <= root->point[currDim] && root->point[currDim] <= query[currDim] + currRadius)
@@ -293,7 +296,14 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim> &query, KDTreeNode 
       if (shouldReplace(query, best, temp2))
       {
         best = temp2;
-        currRadius = radius(query, temp2);
+
+        distanceSquared = 0;
+
+        for (int i = 0; i < Dim; i++)
+        {
+          distanceSquared += (query[i] - temp2[i]) * (query[i] - temp2[i]);
+        }
+        currRadius = sqrt(distanceSquared);
       }
     }
 
@@ -303,7 +313,14 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim> &query, KDTreeNode 
       if (shouldReplace(query, best, temp2))
       {
         best = temp2;
-        currRadius = radius(query, temp2);
+
+        distanceSquared = 0;
+
+        for (int i = 0; i < Dim; i++)
+        {
+          distanceSquared += (query[i] - temp2[i]) * (query[i] - temp2[i]);
+        }
+        currRadius = sqrt(distanceSquared);
       }
     }
   }

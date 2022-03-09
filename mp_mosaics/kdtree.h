@@ -257,7 +257,6 @@ private:
   void remove(KDTreeNode *subroot);
 
   Point<Dim> findNearestNeighbor(const Point<Dim> &query, KDTreeNode *root, int currDim) const;
-  double radius(const Point<Dim> first, const Point<Dim> second) const;
 
   /** Helper function for grading */
   int getPrintData(KDTreeNode *subroot) const;
