@@ -20,19 +20,24 @@ using namespace cs225;
  * A depth-first ImageTraversal.
  * Derived from base class ImageTraversal
  */
-class DFS : public ImageTraversal {
+class DFS : public ImageTraversal
+{
 public:
-  DFS(const PNG & png, const Point & start, double tolerance);
+  DFS(const PNG &png, const Point &start, double tolerance);
 
   ImageTraversal::Iterator begin();
   ImageTraversal::Iterator end();
 
-  void add(const Point & point);
+  void add(const Point &point);
   Point pop();
   Point peek() const;
   bool empty() const;
 
 private:
-	/** @todo [Part 1] */
-	/** add private members here*/
+  /** @todo [Part 1] */
+  /** add private members here*/
+  PNG image_;
+  Point start_;
+  double tolerance_;
+  std::stack<Point> stack_;
 };

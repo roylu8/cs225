@@ -20,14 +20,15 @@ using namespace cs225;
  * A breadth-first ImageTraversal.
  * Derived from base class ImageTraversal
  */
-class BFS : public ImageTraversal {
+class BFS : public ImageTraversal
+{
 public:
-  BFS(const PNG & png, const Point & start, double tolerance);
+  BFS(const PNG &png, const Point &start, double tolerance);
 
   ImageTraversal::Iterator begin();
   ImageTraversal::Iterator end();
 
-  void add(const Point & point);
+  void add(const Point &point);
   Point pop();
   Point peek() const;
   bool empty() const;
@@ -35,4 +36,8 @@ public:
 private:
   /** @todo [Part 1] */
   /** add private members here*/
+  PNG image_;
+  Point start_;
+  double tolerance_;
+  std::queue<Point> queue_;
 };

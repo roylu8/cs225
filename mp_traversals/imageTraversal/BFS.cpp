@@ -22,14 +22,20 @@ using namespace cs225;
  * @param tolerance If the current point is too different (difference larger than tolerance) with the start point,
  * it will not be included in this BFS
  */
-BFS::BFS(const PNG & png, const Point & start, double tolerance) {  
+BFS::BFS(const PNG &png, const Point &start, double tolerance)
+{
   /** @todo [Part 1] */
+  image_ = png;
+  start_ = start;
+  tolerance_ = tolerance;
+  queue_.push(start);
 }
 
 /**
  * Returns an iterator for the traversal starting at the first point.
  */
-ImageTraversal::Iterator BFS::begin() {
+ImageTraversal::Iterator BFS::begin()
+{
   /** @todo [Part 1] */
   return ImageTraversal::Iterator();
 }
@@ -37,7 +43,8 @@ ImageTraversal::Iterator BFS::begin() {
 /**
  * Returns an iterator for the traversal one past the end of the traversal.
  */
-ImageTraversal::Iterator BFS::end() {
+ImageTraversal::Iterator BFS::end()
+{
   /** @todo [Part 1] */
   return ImageTraversal::Iterator();
 }
@@ -45,30 +52,37 @@ ImageTraversal::Iterator BFS::end() {
 /**
  * Adds a Point for the traversal to visit at some point in the future.
  */
-void BFS::add(const Point & point) {
+void BFS::add(const Point &point)
+{
   /** @todo [Part 1] */
+  queue_.push(point);
 }
 
 /**
  * Removes and returns the current Point in the traversal.
  */
-Point BFS::pop() {
+Point BFS::pop()
+{
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point front_ = queue_.front();
+  queue_.pop();
+  return front_;
 }
 
 /**
  * Returns the current Point in the traversal.
  */
-Point BFS::peek() const {
+Point BFS::peek() const
+{
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return queue_.front();
 }
 
 /**
  * Returns true if the traversal is empty.
  */
-bool BFS::empty() const {
+bool BFS::empty() const
+{
   /** @todo [Part 1] */
-  return true;
+  return queue_.empty();
 }

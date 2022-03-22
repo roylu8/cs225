@@ -16,23 +16,31 @@
  * @param p2 Second pixel
  * @return the difference between two HSLAPixels
  */
-double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2) {
+double ImageTraversal::calculateDelta(const HSLAPixel &p1, const HSLAPixel &p2)
+{
   double h = fabs(p1.h - p2.h);
   double s = p1.s - p2.s;
   double l = p1.l - p2.l;
 
   // Handle the case where we found the bigger angle between two hues:
-  if (h > 180) { h = 360 - h; }
+  if (h > 180)
+  {
+    h = 360 - h;
+  }
   h /= 360;
 
-  return sqrt( (h*h) + (s*s) + (l*l) );
+  return sqrt((h * h) + (s * s) + (l * l));
 }
 
 /**
  * Default iterator constructor.
  */
-ImageTraversal::Iterator::Iterator() {
+ImageTraversal::Iterator::Iterator()
+{
   /** @todo [Part 1] */
+  start_ = Point(0, 0);
+  curr_ = start_;
+  traversal_ = NULL;
 }
 
 /**
@@ -40,7 +48,8 @@ ImageTraversal::Iterator::Iterator() {
  *
  * Advances the traversal of the image.
  */
-ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
+ImageTraversal::Iterator &ImageTraversal::Iterator::operator++()
+{
   /** @todo [Part 1] */
   return *this;
 }
@@ -50,9 +59,10 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
  *
  * Accesses the current Point in the ImageTraversal.
  */
-Point ImageTraversal::Iterator::operator*() {
+Point ImageTraversal::Iterator::operator*()
+{
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return curr_;
 }
 
 /**
@@ -60,8 +70,8 @@ Point ImageTraversal::Iterator::operator*() {
  *
  * Determines if two iterators are not equal.
  */
-bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
+bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other)
+{
   /** @todo [Part 1] */
   return false;
 }
-
