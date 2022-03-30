@@ -22,13 +22,14 @@
 template <class K, class V>
 class BTree
 {
-  private:
+private:
     /**
      * A fancy key-value pair which acts as elements in the BTree.
      * Can be compared with <, >, ==. Additionally they can be compared against
      * a K with <, > and == based on its key.
      * */
-    struct DataPair {
+    struct DataPair
+    {
         K key;
         V value;
 
@@ -48,7 +49,7 @@ class BTree
          * @return true if the object's key is less than rhs' key, false
          * otherwise.
          */
-        inline bool operator<(const DataPair& rhs) const
+        inline bool operator<(const DataPair &rhs) const
         {
             return this->key < rhs.key;
         }
@@ -58,7 +59,7 @@ class BTree
          * @param rhs The right hand side (K) of the < operator.
          * @return true if the object's key is less than rhs, false otherwise.
          */
-        inline bool operator<(const K& rhs) const
+        inline bool operator<(const K &rhs) const
         {
             return this->key < rhs;
         }
@@ -69,7 +70,7 @@ class BTree
          * @param rhs The right hand side (DataPair) of the < operator.
          * @return true if lhs is less than rhs's key, false otherwise.
          */
-        inline friend bool operator<(const K& lhs, const DataPair& rhs)
+        inline friend bool operator<(const K &lhs, const DataPair &rhs)
         {
             return lhs < rhs.key;
         }
@@ -80,7 +81,7 @@ class BTree
          * @param rhs The right hand of the > operator.
          * @return true if the object's key is greater than rhs's key, false otherwise.
          */
-        inline bool operator>(const DataPair& rhs) const
+        inline bool operator>(const DataPair &rhs) const
         {
             return this->key > rhs.key;
         }
@@ -91,7 +92,7 @@ class BTree
          * @param rhs The right hand side (DataPair) of the > operator.
          * @return true if lhs is greater than rhs's key, false otherwise.
          */
-        inline friend bool operator>(const K& lhs, const DataPair& rhs)
+        inline friend bool operator>(const K &lhs, const DataPair &rhs)
         {
             return lhs > rhs.key;
         }
@@ -101,7 +102,7 @@ class BTree
          * @param rhs The right hand side (K) of the > operator.
          * @return true if the object's key is greater than rhs, false otherwise.
          */
-        inline bool operator>(const K& rhs) const
+        inline bool operator>(const K &rhs) const
         {
             return this->key > rhs;
         }
@@ -112,7 +113,7 @@ class BTree
          * @param rhs The right hand of the == operator.
          * @return true if the object's key is greater than rhs's key, false otherwise.
          */
-        inline bool operator==(const DataPair& rhs) const
+        inline bool operator==(const DataPair &rhs) const
         {
             return this->key == rhs.key;
         }
@@ -122,7 +123,7 @@ class BTree
          * @param rhs The right hand side (K) of the == operator.
          * @return true if the object's key is equal to rhs, false otherwise.
          */
-        inline bool operator==(const K& rhs) const
+        inline bool operator==(const K &rhs) const
         {
             return this->key == rhs;
         }
@@ -133,7 +134,7 @@ class BTree
          * @param rhs The right hand side (DataPair) of the == operator.
          * @return true if lhs is equal to rhs's key, false otherwise.
          */
-        inline friend bool operator==(const K& lhs, const DataPair& rhs)
+        inline friend bool operator==(const K &lhs, const DataPair &rhs)
         {
             return lhs == rhs.key;
         }
@@ -144,10 +145,11 @@ class BTree
      * two vectors, one with DataPairs representing the data, and one of
      * BTreeNode*s, representing the node's children.
      */
-    struct BTreeNode {
+    struct BTreeNode
+    {
         bool is_leaf;
         std::vector<DataPair> elements;
-        std::vector<BTreeNode*> children;
+        std::vector<BTreeNode *> children;
 
         /**
          * Constructs a BTreeNode. The vectors will reserve to avoid
@@ -163,7 +165,7 @@ class BTree
          * Constructs a BTreeNode based on another. Only copies over
          * the elements and is_leaf information.
          */
-        BTreeNode(const BTreeNode& other)
+        BTreeNode(const BTreeNode &other)
             : is_leaf(other.is_leaf), elements(other.elements)
         {
         }
@@ -182,30 +184,37 @@ class BTree
          * @param n The node to be printed.
          * @return The modified ostream.
          */
-        inline friend std::ostream& operator<<(std::ostream& out,
-                                               const BTreeNode& n)
+        inline friend std::ostream &operator<<(std::ostream &out,
+                                               const BTreeNode &n)
         {
             std::string node_str;
             node_str.reserve(2 * (4 * n.elements.size() + 1));
-            for (auto& elem : n.elements) {
+            for (auto &elem : n.elements)
+            {
                 std::stringstream temp;
                 temp << elem.key;
                 node_str += "| ";
                 node_str += temp.str();
                 node_str += " ";
             }
-            if (!n.elements.empty()) {
+            if (!n.elements.empty())
+            {
                 node_str += "|";
             }
             node_str += "\n";
-            for (auto& child : n.children) {
-                if (child == nullptr) {
+            for (auto &child : n.children)
+            {
+                if (child == nullptr)
+                {
                     node_str += "N   ";
-                } else {
+                }
+                else
+                {
                     node_str += "*   ";
                 }
             }
-            if (n.children.empty()) {
+            if (n.children.empty())
+            {
                 node_str += "no children";
             }
 
@@ -215,9 +224,9 @@ class BTree
     };
 
     unsigned int order;
-    BTreeNode* root;
+    BTreeNode *root;
 
-  public:
+public:
     /**
      * Constructs a default, order 64 BTree.
      */
@@ -234,7 +243,7 @@ class BTree
      * Constructs a BTree as a deep copy of another.
      * @param other The BTree to copy.
      */
-    BTree(const BTree& other);
+    BTree(const BTree &other);
 
     /**
      * Performs checks to make sure the BTree is valid. Specifically
@@ -255,7 +264,7 @@ class BTree
      * @param rhs The BTree to assign into this one.
      * @return The copied BTree.
      */
-    const BTree& operator=(const BTree& rhs);
+    const BTree &operator=(const BTree &rhs);
 
     /**
      * Clears the BTree of all data.
@@ -268,22 +277,22 @@ class BTree
      * @param key The key to insert.
      * @param value The value to insert.
      */
-    void insert(const K& key, const V& value);
+    void insert(const K &key, const V &value);
 
     /**
      * Finds the value associated with a given key.
      * @param key The key to look up.
      * @return The value (if found), the default V if not.
      */
-    V find(const K& key) const;
+    V find(const K &key) const;
 
-  private:
+private:
     /**
      * Private recursive version of the insert function.
      * @param subroot A reference of a pointer to the current BTreeNode.
      * @param pair The DataPair to be inserted.
      */
-    void insert(BTreeNode* subroot, const DataPair& pair);
+    void insert(BTreeNode *subroot, const DataPair &pair);
 
     /**
      * Private recursive version of the find function.
@@ -291,7 +300,7 @@ class BTree
      * @param key The key we are looking up.
      * @return The value (if found), the default V if not.
      */
-    V find(const BTreeNode* subroot, const K& key) const;
+    V find(const BTreeNode *subroot, const K &key) const;
 
     /**
      * Splits a child node of a BTreeNode. Called if the child became too
@@ -302,19 +311,19 @@ class BTree
      * @param child_idx The index of the child in its parent's children
      * vector.
      */
-    void split_child(BTreeNode* parent, size_t child_idx);
+    void split_child(BTreeNode *parent, size_t child_idx);
 
     /**
      * Private recursive version of the clear function.
      * @param subroot A pointer to the current node being cleared.
      */
-    void clear(BTreeNode* subroot);
+    void clear(BTreeNode *subroot);
 
     /**
      * Private recursive version of the copy function.
      * @param subroot A pointer to the current node being copied.
      */
-    BTreeNode* copy(const BTreeNode* subroot);
+    BTreeNode *copy(const BTreeNode *subroot);
 
     /**
      * Private recursive version of the is_valid function.
@@ -322,7 +331,7 @@ class BTree
      * validity.
      * @return true if the node's subtree is valid, false otherwise.
      */
-    bool is_valid(const BTreeNode* subroot, std::vector<DataPair>& data,
+    bool is_valid(const BTreeNode *subroot, std::vector<DataPair> &data,
                   unsigned int order) const;
 };
 
@@ -339,11 +348,86 @@ class BTree
  * the index of val in elements.
  */
 template <class T, class C>
-size_t insertion_idx(const std::vector<T>& elements, const C& val)
+size_t binary_search(const std::vector<T> &elements, const C &val, unsigned int start, unsigned int end)
+{
+    if (start > end)
+    {
+        if (val < elements[end])
+        {
+            return end - 1;
+        }
+
+        if (val > elements[start])
+        {
+            return start + 1;
+        }
+
+        if (val > elements[end] && val < elements[start])
+        {
+            return start;
+        }
+        if (val == elements[start])
+        {
+            return start;
+        }
+        if (val == elements[end])
+        {
+            return end;
+        }
+    }
+
+    if (start == end)
+    {
+        if (elements[start] < val)
+        {
+            return start + 1;
+        }
+        else
+        {
+            return start;
+        }
+    }
+
+    unsigned int mid = (start + end) / 2;
+
+    if (elements[mid] == val)
+    {
+        return (size_t)mid;
+    }
+    else if (elements[mid] < val)
+    {
+        return (size_t)binary_search(elements, val, mid + 1, end);
+    }
+    else if (elements[elements.size() - 1] == val)
+    {
+        return elements.size() - 1;
+    }
+    else
+    {
+        return (size_t)binary_search(elements, val, start, mid - 1);
+    }
+}
+template <class T, class C>
+size_t insertion_idx(const std::vector<T> &elements, const C &val)
 {
     /* TODO Your code goes here! */
+    if (elements.size() == 0)
+    {
+        return 0;
+    }
+    if (val < elements[0])
+    {
+        return 0;
+    }
+    if (val > elements[elements.size() - 1])
+    {
+        return (size_t)elements.size();
+    }
+    else
+    {
 
-    return 5;
+        return (size_t)binary_search(elements, val, 0, elements.size() - 1);
+    }
 }
 
 #include "btree_given.cpp"
