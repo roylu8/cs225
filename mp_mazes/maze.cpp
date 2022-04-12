@@ -154,29 +154,57 @@ vector<int> SquareMaze::solveMaze()
         s.pop();
         int caseh;
 
-        if (canTravel(cX, cY, 2) && visited[cX - 1][cY] == false)
-        {
-            visited[cX - 1][cY] = true;
-            s.push(width_ * cY + cX - 1);
-            path[width_ * cY + cX - 1] = curr;
-        }
         if (canTravel(cX, cY, 0) && visited[cX + 1][cY] == false)
         {
-            visited[cX + 1][cY] = true;
-            s.push(width_ * cY + cX + 1);
-            path[width_ * cY + cX + 1] = curr;
+            caseh = 0;
         }
-        if (canTravel(cX, cY, 3) && visited[cX][cY - 1] == false)
+        else if (canTravel(cX, cY, 1) && visited[cX][cY + 1] == false)
         {
-            visited[cX][cY - 1] = true;
-            s.push(width_ * cY + cX - width_);
-            path[width_ * cY + cX - width_] = curr;
+            caseh = 1;
         }
-        if (canTravel(cX, cY, 1) && visited[cX][cY + 1] == false)
+        else if (canTravel(cX, cY, 2) && visited[cX - 1][cY] == false)
         {
-            visited[cX][cY + 1] = true;
-            s.push(width_ * cY + cX + width_);
-            path[width_ * cY + cX + width_] = curr;
+            caseh = 2;
+        }
+        else if (canTravel(cX, cY, 3) && visited[cX][cY - 1] == false)
+        {
+            caseh = 3;
+        }
+        else
+        {
+            caseh = 4;
+        }
+
+        switch (caseh)
+        {
+        case 0:
+            if (canTravel(cX, cY, 0) && visited[cX + 1][cY] == false)
+            {
+                visited[cX + 1][cY] = true;
+                s.push(width_ * cY + cX + 1);
+                path[width_ * cY + cX + 1] = curr;
+            }
+        case 1:
+            if (canTravel(cX, cY, 1) && visited[cX][cY + 1] == false)
+            {
+                visited[cX][cY + 1] = true;
+                s.push(width_ * cY + cX + width_);
+                path[width_ * cY + cX + width_] = curr;
+            }
+        case 2:
+            if (canTravel(cX, cY, 2) && visited[cX - 1][cY] == false)
+            {
+                visited[cX - 1][cY] = true;
+                s.push(width_ * cY + cX - 1);
+                path[width_ * cY + cX - 1] = curr;
+            }
+        case 3:
+            if (canTravel(cX, cY, 3) && visited[cX][cY - 1] == false)
+            {
+                visited[cX][cY - 1] = true;
+                s.push(width_ * cY + cX - width_);
+                path[width_ * cY + cX - width_] = curr;
+            }
         }
     }
     int max = 0;
