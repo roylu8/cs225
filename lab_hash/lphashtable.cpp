@@ -10,9 +10,10 @@ LPHashTable<K, V>::LPHashTable(size_t tsize)
     if (tsize <= 0)
         tsize = 17;
     size = findPrime(tsize);
-    table = new std::pair<K, V>*[size];
+    table = new std::pair<K, V> *[size];
     should_probe = new bool[size];
-    for (size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++)
+    {
         table[i] = NULL;
         should_probe[i] = false;
     }
@@ -29,17 +30,19 @@ LPHashTable<K, V>::~LPHashTable()
 }
 
 template <class K, class V>
-LPHashTable<K, V> const& LPHashTable<K, V>::operator=(LPHashTable const& rhs)
+LPHashTable<K, V> const &LPHashTable<K, V>::operator=(LPHashTable const &rhs)
 {
-    if (this != &rhs) {
+    if (this != &rhs)
+    {
         for (size_t i = 0; i < size; i++)
             delete table[i];
         delete[] table;
         delete[] should_probe;
 
-        table = new std::pair<K, V>*[rhs.size];
+        table = new std::pair<K, V> *[rhs.size];
         should_probe = new bool[rhs.size];
-        for (size_t i = 0; i < rhs.size; i++) {
+        for (size_t i = 0; i < rhs.size; i++)
+        {
             should_probe[i] = rhs.should_probe[i];
             if (rhs.table[i] == NULL)
                 table[i] = NULL;
@@ -53,11 +56,12 @@ LPHashTable<K, V> const& LPHashTable<K, V>::operator=(LPHashTable const& rhs)
 }
 
 template <class K, class V>
-LPHashTable<K, V>::LPHashTable(LPHashTable<K, V> const& other)
+LPHashTable<K, V>::LPHashTable(LPHashTable<K, V> const &other)
 {
-    table = new std::pair<K, V>*[other.size];
+    table = new std::pair<K, V> *[other.size];
     should_probe = new bool[other.size];
-    for (size_t i = 0; i < other.size; i++) {
+    for (size_t i = 0; i < other.size; i++)
+    {
         should_probe[i] = other.should_probe[i];
         if (other.table[i] == NULL)
             table[i] = NULL;
@@ -69,7 +73,7 @@ LPHashTable<K, V>::LPHashTable(LPHashTable<K, V> const& other)
 }
 
 template <class K, class V>
-void LPHashTable<K, V>::insert(K const& key, V const& value)
+void LPHashTable<K, V>::insert(K const &key, V const &value)
 {
 
     /**
@@ -80,33 +84,79 @@ void LPHashTable<K, V>::insert(K const& key, V const& value)
      * Also, don't forget to mark the cell for probing with should_probe!
      */
 
-    (void) key;   // prevent warnings... When you implement this function, remove this line.
-    (void) value; // prevent warnings... When you implement this function, remove this line.
+    if (shouldResize())
+    {
+        resizeTable();
+    }
+
+    size_t index = hashes::hash(key, size);
+
+    while (should_probe[index])
+    {
+        index = (index + 1) % size;
+    }
+
+    table[index] = new std::pair<K, V>(key, value);
+    should_probe[index] = true;
+
+    elems++;
+    if (shouldResize())
+    {
+        resizeTable();
+    }
 }
 
 template <class K, class V>
-void LPHashTable<K, V>::remove(K const& key)
+void LPHashTable<K, V>::remove(K const &key)
 {
     /**
      * @todo: implement this function
      */
+    int index = findIndex(key);
+    if (index == -1)
+    {
+        return;
+    }
+
+    std::pair<K, V> *temp_pointer = table[index];
+    table[index] = NULL;
+    // should_probe[index]=false;
+    delete temp_pointer;
+    elems--;
 }
 
 template <class K, class V>
-int LPHashTable<K, V>::findIndex(const K& key) const
+int LPHashTable<K, V>::findIndex(const K &key) const
 {
-    
+
     /**
      * @todo Implement this function
      *
      * Be careful in determining when the key is not in the table!
      */
 
+    size_t index = hashes::hash(key, size);
+    size_t start = index;
+
+    while (should_probe[index])
+    {
+        // std::cout<<"A"<<table[index]<<" "<<key<<std::endl;
+        if (table[index] != NULL && table[index]->first == key)
+        {
+            return index;
+        }
+        index = (index + 1) % size;
+        if (start == index)
+        {
+            break;
+        }
+    }
+
     return -1;
 }
 
 template <class K, class V>
-V LPHashTable<K, V>::find(K const& key) const
+V LPHashTable<K, V>::find(K const &key) const
 {
     int idx = findIndex(key);
     if (idx != -1)
@@ -115,11 +165,12 @@ V LPHashTable<K, V>::find(K const& key) const
 }
 
 template <class K, class V>
-V& LPHashTable<K, V>::operator[](K const& key)
+V &LPHashTable<K, V>::operator[](K const &key)
 {
     // First, attempt to find the key and return its value by reference
     int idx = findIndex(key);
-    if (idx == -1) {
+    if (idx == -1)
+    {
         // otherwise, insert the default value and return it
         insert(key, V());
         idx = findIndex(key);
@@ -128,7 +179,7 @@ V& LPHashTable<K, V>::operator[](K const& key)
 }
 
 template <class K, class V>
-bool LPHashTable<K, V>::keyExists(K const& key) const
+bool LPHashTable<K, V>::keyExists(K const &key) const
 {
     return findIndex(key) != -1;
 }
@@ -140,7 +191,7 @@ void LPHashTable<K, V>::clear()
         delete table[i];
     delete[] table;
     delete[] should_probe;
-    table = new std::pair<K, V>*[17];
+    table = new std::pair<K, V> *[17];
     should_probe = new bool[17];
     for (size_t i = 0; i < 17; i++)
         should_probe[i] = false;
@@ -159,4 +210,31 @@ void LPHashTable<K, V>::resizeTable()
      *
      * @hint Use findPrime()!
      */
+    std::pair<K, V> **new_table = new std::pair<K, V> *[findPrime(2 * size)];
+    bool *new_should = new bool[findPrime(2 * size)];
+    for (size_t i = 0; i < findPrime(2 * size); i++)
+    {
+        new_table[i] = NULL;
+        new_should[i] = false;
+    }
+    for (size_t i = 0; i < size; i++)
+    {
+        if (should_probe[i])
+        {
+            size_t index = hashes::hash(table[i]->first, findPrime(2 * size));
+            while (new_should[index])
+            {
+                index = (index + 1) % size;
+            }
+            new_table[index] = table[i];
+            new_should[index] = true;
+        }
+    }
+
+    size = findPrime(2 * size);
+
+    delete[] table;
+    table = new_table;
+    delete[] should_probe;
+    should_probe = new_should;
 }
