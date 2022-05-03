@@ -59,8 +59,6 @@ V2D schedule(V2D courses, std::vector<std::string> timeslots);
 
 vector<vector<int>> matrix(V2D course_list);
 
-vector<vector<int>> convert(vector<vector<int>> a);
-
 class Color
 {
     int V;

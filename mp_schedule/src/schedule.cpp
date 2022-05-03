@@ -135,14 +135,16 @@ V2D schedule(V2D courses, std::vector<std::string> timeslots)
   // Your code here!
   V2D sched;
   vector<vector<int>> adjMatrix = matrix(courses);
-  vector<vector<int>> adjList = convert(adjMatrix);
 
   Color g1(courses.size());
-  for (unsigned i = 0; i < adjList.size(); i++)
+  for (unsigned i = 0; i < adjMatrix.size(); i++)
   {
-    for (unsigned j = 0; j < adjList[i].size(); j++)
+    for (unsigned j = 0; j < adjMatrix[i].size(); j++)
     {
-      g1.addEdge(i, adjList[i][j]);
+      if (adjMatrix[i][j] == 1)
+      {
+        g1.addEdge(i, j);
+      }
     }
   }
   vector<int> coloredMap = g1.greedyColoring();
@@ -213,23 +215,6 @@ vector<vector<int>> matrix(V2D course_list)
   }
 
   return m;
-}
-
-vector<vector<int>> convert(vector<vector<int>> a)
-{
-  vector<vector<int>> adjList(a.size());
-  for (unsigned i = 0; i < a.size(); i++)
-  {
-
-    for (unsigned j = 0; j < a[i].size(); j++)
-    {
-      if (a[i][j] == 1)
-      {
-        adjList[i].push_back(j);
-      }
-    }
-  }
-  return adjList;
 }
 
 void Color::addEdge(int v, int w)
