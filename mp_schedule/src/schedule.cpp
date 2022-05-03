@@ -9,7 +9,6 @@
 #include <map>
 #include <unordered_map>
 
-// #include "Color.h"
 #include "schedule.h"
 #include "utils.h"
 #include <algorithm>
@@ -135,46 +134,46 @@ V2D schedule(V2D courses, std::vector<std::string> timeslots)
 {
   // Your code here!
   V2D sched;
-  // vector<vector<int>> adjMatrix = matrix(courses);
-  // vector<vector<int>> adjList = convert(adjMatrix);
+  vector<vector<int>> adjMatrix = matrix(courses);
+  vector<vector<int>> adjList = convert(adjMatrix);
 
-  // Color g1(courses.size());
-  // for (unsigned i = 0; i < adjList.size(); i++)
-  // {
-  //   for (unsigned j = 0; j < adjList[i].size(); j++)
-  //   {
-  //     g1.addEdge(i, adjList[i][j]);
-  //   }
-  // }
-  // vector<int> coloredMap = g1.greedyColoring();
+  Color g1(courses.size());
+  for (unsigned i = 0; i < adjList.size(); i++)
+  {
+    for (unsigned j = 0; j < adjList[i].size(); j++)
+    {
+      g1.addEdge(i, adjList[i][j]);
+    }
+  }
+  vector<int> coloredMap = g1.greedyColoring();
 
-  // unsigned maxColor = timeslots.size();
-  // // unsigned maxColorsUsed = 0;
-  // // for (unsigned i = 0; i < coloredMap.size(); i++)
-  // // {
-  // //   if ((unsigned)(coloredMap[i]) > maxColorsUsed)
-  // //   {
-  // //     maxColorsUsed = coloredMap[i];
-  // //   }
-  // // }
+  unsigned maxColor = timeslots.size();
+  unsigned maxColorsUsed = 0;
+  for (unsigned i = 0; i < coloredMap.size(); i++)
+  {
+    if ((unsigned)(coloredMap[i]) > maxColorsUsed)
+    {
+      maxColorsUsed = coloredMap[i];
+    }
+  }
 
-  // // if (maxColor < maxColorsUsed)
-  // // {
-  // //   sched.push_back(vector<string>());
-  // //   sched[0].push_back("-1");
-  // //   return sched;
-  // // }
+  if (maxColor - 1 < maxColorsUsed)
+  {
+    sched.push_back(vector<string>());
+    sched[0].push_back("-1");
+    return sched;
+  }
 
-  // for (unsigned int i = 0; i < maxColor; i++)
-  // {
-  //   sched.push_back(vector<string>());
-  //   sched[i].push_back(timeslots[i]);
-  // }
+  for (unsigned int i = 0; i < maxColor; i++)
+  {
+    sched.push_back(vector<string>());
+    sched[i].push_back(timeslots[i]);
+  }
 
-  // for (unsigned i = 0; i < coloredMap.size(); i++)
-  // {
-  //   sched[coloredMap[i]].push_back(courses[i][0]);
-  // }
+  for (unsigned i = 0; i < coloredMap.size(); i++)
+  {
+    sched[coloredMap[i]].push_back(courses[i][0]);
+  }
 
   return sched;
 }
@@ -213,16 +212,6 @@ vector<vector<int>> matrix(V2D course_list)
     m.push_back(temp);
   }
 
-  // prints matrix
-  for (unsigned int i = 0; i < m.size(); i++)
-  {
-    for (unsigned int j = 0; j < m[i].size(); j++)
-    {
-      cout << m[i][j] << " ";
-    }
-    // Newline for new row
-    cout << endl;
-  }
   return m;
 }
 
@@ -240,14 +229,46 @@ vector<vector<int>> convert(vector<vector<int>> a)
       }
     }
   }
-  for (unsigned int i = 0; i < adjList.size(); i++)
-  {
-    for (unsigned int j = 0; j < adjList[i].size(); j++)
-    {
-      cout << adjList[i][j] << " ";
-    }
-    // Newline for new row
-    cout << endl;
-  }
   return adjList;
+}
+
+void Color::addEdge(int v, int w)
+{
+  adj[v].push_back(w);
+  adj[w].push_back(v);
+}
+
+vector<int> Color::greedyColoring()
+{
+  vector<int> result(V);
+
+  result[0] = 0;
+
+  for (int u = 1; u < V; u++)
+    result[u] = -1;
+
+  vector<bool> available(V);
+  for (int cr = 0; cr < V; cr++)
+    available[cr] = false;
+
+  for (int u = 1; u < V; u++)
+  {
+    list<int>::iterator i;
+    for (i = adj[u].begin(); i != adj[u].end(); ++i)
+      if (result[*i] != -1)
+        available[result[*i]] = true;
+
+    int cr;
+    for (cr = 0; cr < V; cr++)
+      if (available[cr] == false)
+        break;
+
+    result[u] = cr;
+
+    for (i = adj[u].begin(); i != adj[u].end(); ++i)
+      if (result[*i] != -1)
+        available[result[*i]] = false;
+  }
+
+  return result;
 }

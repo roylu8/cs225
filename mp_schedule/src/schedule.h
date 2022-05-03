@@ -13,6 +13,9 @@
 #include <sstream>
 #include <set>
 
+#include <iostream>
+#include <list>
+
 using namespace std;
 
 typedef std::map<std::string, std::vector<std::string>> sMap;
@@ -56,4 +59,22 @@ V2D schedule(V2D courses, std::vector<std::string> timeslots);
 
 vector<vector<int>> matrix(V2D course_list);
 
-vector<vector<int>> convert( vector<vector<int>> a);
+vector<vector<int>> convert(vector<vector<int>> a);
+
+class Color
+{
+    int V;
+    list<int> *adj;
+
+public:
+    Color(int V)
+    {
+        this->V = V;
+        adj = new list<int>[V];
+    }
+    ~Color() { delete[] adj; }
+
+    void addEdge(int v, int w);
+
+    vector<int> greedyColoring();
+};
