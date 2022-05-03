@@ -13,8 +13,10 @@
 #include <sstream>
 #include <set>
 
-typedef std::map<std::string, std::vector<std::string> > sMap;
-typedef std::vector<std::vector<std::string> > V2D; 
+using namespace std;
+
+typedef std::map<std::string, std::vector<std::string>> sMap;
+typedef std::vector<std::vector<std::string>> V2D;
 
 /**
  * Given a filename to a CSV-formatted text file, create a 2D vector of strings where each row
@@ -23,7 +25,7 @@ typedef std::vector<std::vector<std::string> > V2D;
  *  
  * @param filename The filename of a CSV-formatted text file. 
  */
-V2D file_to_V2D(const std::string & filename);
+V2D file_to_V2D(const std::string &filename);
 
 /**
  * Given a course roster and a list of students and their courses, 
@@ -35,7 +37,7 @@ V2D file_to_V2D(const std::string & filename);
  * @param course A 2D vector of strings where each row is a course ID followed by the students in the course
  * @param student A 2D vector of strings where each row is a student ID followed by the courses they are taking
  */
-V2D clean(V2D & cv, V2D & sv);
+V2D clean(V2D &cv, V2D &sv);
 
 /**
  * Given a collection of courses and a list of available times, create a valid scheduling (if possible).
@@ -51,3 +53,7 @@ V2D clean(V2D & cv, V2D & sv);
  * @param timeslots A vector of strings giving the total number of unique timeslots
  */
 V2D schedule(V2D courses, std::vector<std::string> timeslots);
+
+vector<vector<int>> matrix(V2D course_list);
+
+vector<vector<int>> convert( vector<vector<int>> a);
