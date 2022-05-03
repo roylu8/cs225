@@ -9,7 +9,7 @@
 #include <map>
 #include <unordered_map>
 
-#include "Color.h"
+// #include "Color.h"
 #include "schedule.h"
 #include "utils.h"
 #include <algorithm>
@@ -135,46 +135,46 @@ V2D schedule(V2D courses, std::vector<std::string> timeslots)
 {
   // Your code here!
   V2D sched;
-  vector<vector<int>> adjMatrix = matrix(courses);
-  vector<vector<int>> adjList = convert(adjMatrix);
+  // vector<vector<int>> adjMatrix = matrix(courses);
+  // vector<vector<int>> adjList = convert(adjMatrix);
 
-  Color g1(courses.size());
-  for (unsigned i = 0; i < adjList.size(); i++)
-  {
-    for (unsigned j = 0; j < adjList[i].size(); j++)
-    {
-      g1.addEdge(i, adjList[i][j]);
-    }
-  }
-  vector<int> coloredMap = g1.greedyColoring();
-
-  unsigned maxColor = timeslots.size();
-  // unsigned maxColorsUsed = 0;
-  // for (unsigned i = 0; i < coloredMap.size(); i++)
+  // Color g1(courses.size());
+  // for (unsigned i = 0; i < adjList.size(); i++)
   // {
-  //   if ((unsigned)(coloredMap[i]) > maxColorsUsed)
+  //   for (unsigned j = 0; j < adjList[i].size(); j++)
   //   {
-  //     maxColorsUsed = coloredMap[i];
+  //     g1.addEdge(i, adjList[i][j]);
   //   }
   // }
+  // vector<int> coloredMap = g1.greedyColoring();
 
-  // if (maxColor < maxColorsUsed)
+  // unsigned maxColor = timeslots.size();
+  // // unsigned maxColorsUsed = 0;
+  // // for (unsigned i = 0; i < coloredMap.size(); i++)
+  // // {
+  // //   if ((unsigned)(coloredMap[i]) > maxColorsUsed)
+  // //   {
+  // //     maxColorsUsed = coloredMap[i];
+  // //   }
+  // // }
+
+  // // if (maxColor < maxColorsUsed)
+  // // {
+  // //   sched.push_back(vector<string>());
+  // //   sched[0].push_back("-1");
+  // //   return sched;
+  // // }
+
+  // for (unsigned int i = 0; i < maxColor; i++)
   // {
   //   sched.push_back(vector<string>());
-  //   sched[0].push_back("-1");
-  //   return sched;
+  //   sched[i].push_back(timeslots[i]);
   // }
 
-  for (unsigned int i = 0; i < maxColor; i++)
-  {
-    sched.push_back(vector<string>());
-    sched[i].push_back(timeslots[i]);
-  }
-
-  for (unsigned i = 0; i < coloredMap.size(); i++)
-  {
-    sched[coloredMap[i]].push_back(courses[i][0]);
-  }
+  // for (unsigned i = 0; i < coloredMap.size(); i++)
+  // {
+  //   sched[coloredMap[i]].push_back(courses[i][0]);
+  // }
 
   return sched;
 }
